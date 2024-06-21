@@ -6,13 +6,18 @@ class_name Player
 
 var viewport_size
 var speed = 300.0
+var accelerometer_speed = 130
 var gravity = 15.0
 var max_fall_velocity = 1000.0
 var jump_velocity = -800.0
+var use_accelerometer:bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	viewport_size = get_viewport_rect().size
+	use_accelerometer = false
+	if OS.get_name() == "Android":
+		use_accelerometer = true
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -30,19 +35,24 @@ func _physics_process(_delta):
 	velocity.y += gravity
 	if velocity.y > max_fall_velocity:
 		velocity.y = max_fall_velocity
-	
-	# move_left = -1 while move_right = 1
-	var direction = Input.get_axis("move_left", "move_right")
-	# if we have a valid directional input (any number not zero) then
-	if direction:
-		# set the horizontal position = spee (300) to the right (1) or the left(-1)
-		velocity.x = direction * speed
 		
+	if use_accelerometer:
+		var accelerometer_movement = Input.get_accelerometer()
+		velocity.x = accelerometer_movement.x * accelerometer_speed
+		#GameUtility.debug_log("tilt x:" + str(velocity.x))
 	else:
-		# immediately stop the movement
-		# if you want the player to gradually stop, then 
-		# divide the speed by like a quarter of it's value
-		velocity.x = move_toward(velocity.x, 0, speed)
+		# move_left = -1 while move_right = 1
+		var direction = Input.get_axis("move_left", "move_right")
+		# if we have a valid directional input (any number not zero) then
+		if direction:
+			# set the horizontal position = spee (300) to the right (1) or the left(-1)
+			velocity.x = direction * speed
+			
+		else:
+			# immediately stop the movement
+			# if you want the player to gradually stop, then 
+			# divide the speed by like a quarter of it's value
+			velocity.x = move_toward(velocity.x, 0, speed)
 	# go ahead and make the move
 	move_and_slide()
 	teleport_at_the_edges()
@@ -61,3 +71,4 @@ func teleport_at_the_edges():
 
 func jump():
 	velocity.y = jump_velocity
+	# GameUtility.debug_log("auto jumped!")
