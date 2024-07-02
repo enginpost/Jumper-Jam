@@ -1,10 +1,16 @@
 extends CanvasLayer
 
+signal start_game
+signal clear_level_for_new_game
+
 @onready var console = $Debug/ConsoleLog
 
 @onready var title_screen = $TitleScreen
 @onready var pause_screen = $PauseScreen
 @onready var game_over_screen = $GameOverScreen
+
+@onready var game_over_score_label = $GameOverScreen/Box/ScoreLabel
+@onready var game_over_high_score_label = $GameOverScreen/Box/HighScoreLabel
 
 var current_screen = null
 
@@ -35,19 +41,35 @@ func register_buttons():
 				button.clicked.connect(_on_button_pressed)
 
 func _on_button_pressed(button):
+	SoundFX.play("Click")
 	match button.name:
 		"TitlePlay":
-			change_screen(pause_screen)
+			# remove the title screen with the play button
+			change_screen(null)
+			# wait for the length of time it takes for the title screen to fade out
+			await(get_tree().create_timer(0.5).timeout)
+			# now start the game
+			start_game.emit()
 		"PauseRetry":
-			change_screen(title_screen)
+			change_screen(null)
+			await(get_tree().create_timer(0.75).timeout)
+			get_tree().paused = false
+			start_game.emit()
 		"PauseBack":
-			change_screen(game_over_screen)
+			change_screen(title_screen)
+			get_tree().paused = false
+			clear_level_for_new_game.emit()
 		"PauseClose":
-			change_screen(title_screen)
+			change_screen(null)
+			await(get_tree().create_timer(0.75).timeout)
+			get_tree().paused = false
 		"GameOverRetry":
-			change_screen(title_screen)
+			change_screen(null)
+			await(get_tree().create_timer(0.5).timeout)
+			start_game.emit()
 		"GameOverBack":
-			change_screen(pause_screen)
+			change_screen(title_screen)
+			clear_level_for_new_game.emit()
 
 func change_screen(new_screen):
 	if current_screen != null:
@@ -63,3 +85,11 @@ func change_screen(new_screen):
 		# remember that the buttons on invisible screen will remain disabled
 		await tween_visible.finished
 		get_tree().call_group("buttons", "set_disabled",false)
+
+func game_over(score, highscore):
+	game_over_score_label.text = "Score: " + str(score)
+	game_over_high_score_label.text = "Best: " + str(highscore)
+	change_screen(game_over_screen)
+	
+func pause_game():
+	change_screen(pause_screen)

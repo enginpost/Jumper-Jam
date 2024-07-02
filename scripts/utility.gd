@@ -11,5 +11,5 @@ func debug_log(message:String):
 		var log_label = console.find_child("LogLabel")
 		if log_label:
 			if !log_label.text.is_empty():
-				log_label += "\n"
+				log_label.text += "\n"
 			log_label.text += message

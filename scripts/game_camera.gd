@@ -8,6 +8,8 @@ var player: Player = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	#setup the camera immediately (and later do it on the physics_process as well
+	set_camera_position()
 	viewport_size = get_viewport_rect().size
 	# get the width of the viewport
 	# and set the X position of the camera to half of the viewport width
@@ -43,6 +45,9 @@ func _process(_delta):
 			
 	
 func _physics_process(_delta):
+	set_camera_position()
+		
+func set_camera_position():
 	if player != null:
 		# set the camera (this) global_position y position = the non-null player global_position.y value
 		global_position.y = player.global_position.y

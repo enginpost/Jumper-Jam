@@ -17,6 +17,7 @@ script = ExtResource("1_cmnqx")
 [node name="TitleScreen" parent="." instance=ExtResource("2_kpl5t")]
 
 [node name="PauseScreen" parent="." instance=ExtResource("4_mhhfc")]
+process_mode = 3
 visible = false
 
 [node name="GameOverScreen" parent="." instance=ExtResource("4_hmu5c")]

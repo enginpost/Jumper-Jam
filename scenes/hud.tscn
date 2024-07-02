@@ -9,6 +9,7 @@ font_size = 33
 font_color = Color(0.822505, 0.505364, 0.0956423, 1)
 
 [node name="HUD" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,7 +24,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 80.0
 grow_horizontal = 2
-color = Color(0, 0, 0, 0.588235)
+color = Color(1, 1, 1, 0.588235)
 
 [node name="TopBar" type="Control" parent="."]
 layout_mode = 1
