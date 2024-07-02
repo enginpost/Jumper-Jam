@@ -19,7 +19,7 @@ var score:int = 0
 var save_file_path = "user://highscore.save"
 var highscore:int = 0
 
-var new_skin_unlocked = true
+var new_skin_unlocked = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

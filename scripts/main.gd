@@ -13,6 +13,9 @@ func _ready():
 	screens.clear_level_for_new_game.connect( _on_clear_level_for_new_game )
 	game.player_died.connect( _on_game_ended )
 	game.pause_game.connect( _on_game_pause_game )
+	
+	# IAP (in-app purchase) signals
+	screens.purchase_skin.connect( _on_screens_purchase_skin )
 
 func _on_window_event(event):
 	match event:
@@ -46,3 +49,7 @@ func _on_game_ended(score, highscore):
 func _on_game_pause_game():
 	get_tree().paused = true
 	screens.pause_game()
+
+func _on_screens_purchase_skin():
+	if game.new_skin_unlocked == false:
+		game.new_skin_unlocked = true

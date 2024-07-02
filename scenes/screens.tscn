@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://d2ilicpdv7f5d"]
+[gd_scene load_steps=8 format=3 uid="uid://d2ilicpdv7f5d"]
 
 [ext_resource type="Script" path="res://scripts/screens.gd" id="1_cmnqx"]
 [ext_resource type="PackedScene" uid="uid://vyefcuir7r74" path="res://scenes/title_screen.tscn" id="2_kpl5t"]
 [ext_resource type="Texture2D" uid="uid://nnfjpohwgikj" path="res://assets/textures/ui/gear.png" id="2_vx1h1"]
+[ext_resource type="PackedScene" uid="uid://c57bnyx68v7f4" path="res://scenes/shop_screen.tscn" id="3_rcvp8"]
 [ext_resource type="PackedScene" uid="uid://bxhgb1wmc3v5s" path="res://scenes/game_over_screen.tscn" id="4_hmu5c"]
 [ext_resource type="PackedScene" uid="uid://ceixwryfk1788" path="res://scenes/pause_screen.tscn" id="4_mhhfc"]
 
@@ -15,6 +16,9 @@ layer = 101
 script = ExtResource("1_cmnqx")
 
 [node name="TitleScreen" parent="." instance=ExtResource("2_kpl5t")]
+visible = false
+
+[node name="ShopScreen" parent="." instance=ExtResource("3_rcvp8")]
 
 [node name="PauseScreen" parent="." instance=ExtResource("4_mhhfc")]
 process_mode = 3
